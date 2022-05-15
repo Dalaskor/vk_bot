@@ -1,2 +1,4 @@
-/_token.py
 /bot.log
+/settings.py
+__pycache__
+venv

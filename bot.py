@@ -3,13 +3,16 @@
 import logging
 from random import randint
 
-from _token import token
-import vk_api # TODO fix version!!
+try:
+    import settings
+except ImportError:
+    exit('DO cp settings.py.default settings.py and set token!')
+
+import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 RAND_MIN = 0
 RAND_MAX = 2147483647
-group_id = 213300834
 
 log = logging.getLogger("bot")
 
@@ -57,7 +60,7 @@ class Bot:
     def on_event(self, event: VkBotEventType):
         """Send message back, if message is string
 
-            :param event: TODO
+            :param event: VkBotMessageEvent object
             :return: None
         """
         if event.type == VkBotEventType.MESSAGE_NEW:
@@ -75,5 +78,5 @@ class Bot:
 
 if __name__ == "__main__":
     configure_logging()
-    bot = Bot(group_id, token)
+    bot = Bot(settings.GROUP_ID, settings.TOKEN)
     bot.run()
