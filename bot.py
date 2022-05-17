@@ -46,7 +46,6 @@ class Bot:
 
         self.vk = vk_api.VkApi(token=token)
         self.long_poller = VkBotLongPoll(self.vk, self.group_id)
-
         self.api = self.vk.get_api()
 
     def run(self):
@@ -77,6 +76,6 @@ class Bot:
             log.info(f"SKIP {event.type}")
 
 if __name__ == "__main__":
-    configure_logging()
     bot = Bot(settings.GROUP_ID, settings.TOKEN)
+    configure_logging()
     bot.run()
