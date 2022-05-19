@@ -31,9 +31,14 @@ def configure_logging():
 
 class Bot:
     """
-    Echo bot for vk.com
-
+    Сценарий регистрации на конференцию через vk.com
     Use pyhton3.7
+
+    Поддерживает ответы на вопросы про дату, место проведения и сценарий регистрации:
+    - спрашиваем имя
+    - спрашиваем email
+    - говорим об успешной регистрации
+    Если шаг не пройден, задаем уточняющий вопрос пока шаг не будет пройден.
     """
     def __init__(self, group_id, token):
         """
@@ -43,10 +48,10 @@ class Bot:
         """
         self.group_id = group_id
         self.token = token
-
         self.vk = vk_api.VkApi(token=token)
         self.long_poller = VkBotLongPoll(self.vk, self.group_id)
         self.api = self.vk.get_api()
+        self.user_states = dict() # user_id (peer_id)
 
     def run(self):
         """Launch bot."""
