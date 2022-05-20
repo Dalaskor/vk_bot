@@ -90,7 +90,7 @@ class Bot:
             # search intent
             for intent in settings.INTENTS:
                 log.debug(f'User gets {intent}')
-                if any(token in text for token in intent['tokens']):
+                if any(token in text.lower() for token in intent['tokens']):
                     # run intent
                     if intent['answer']:
                         text_to_send = intent['answer']
