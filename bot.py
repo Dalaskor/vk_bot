@@ -4,7 +4,7 @@ import random
 from pony.orm import *
 import handlers
 from random import randint
-from models import UserState
+from models import UserState, Registration
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 try:
@@ -121,8 +121,9 @@ class Bot:
                 state.step_name = step['next_step']
             else:
                 # finish scenario
-                state.delete()
                 log.info('Зарегистрирован: {name} {email}'.format(**state.context))
+                Registration(name=state.context['name'], email=state.context['email'])
+                state.delete()
         else:
             # retry current step
             text_to_send = step['failure_text'].format(**state.context)
