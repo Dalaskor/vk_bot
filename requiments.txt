@@ -22,6 +22,7 @@ msgpack==1.0.2
 packaging==20.9
 pastel==0.2.1
 pexpect==4.8.0
+Pillow==9.1.1
 pipenv==2021.5.29
 pkginfo==1.7.1
 platformdirs==2.3.0
@@ -29,6 +30,7 @@ pluggy==1.0.0
 poetry==1.1.8
 poetry-core==1.0.4
 pony==0.7.16
+psycopg2-binary==2.9.3
 ptyprocess==0.7.0
 py==1.11.0
 pycparser==2.20
@@ -39,6 +41,7 @@ requests==2.26.0
 requests-toolbelt==0.9.1
 SecretStorage==3.3.1
 shellingham==1.4.0
+six==1.16.0
 tomli==2.0.1
 tomlkit==0.7.2
 urllib3==1.26.6
