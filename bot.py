@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import logging
 import random
+
+import requests as requests
 from pony.orm import *
 import handlers
 from random import randint
@@ -81,17 +83,21 @@ class Bot:
             self.continue_scenario(text, state, user_id)
         else:
             # search intent
+            text_to_send = ''
+
             for intent in settings.INTENTS:
                 log.debug(f'User gets {intent}')
                 if any(token in text.lower() for token in intent['tokens']):
                     # run intent
                     if intent['answer']:
-                        self.send_text(intent['answer'], user_id)
+                         self.send_text(intent['answer'], user_id)
                     else:
                         self.start_scenario(user_id, intent['scenario'], text)
                     break
                 else:
                     self.send_text(settings.DEFAULT_ANSWER, user_id)
+
+            self.send_text(text_to_send, user_id)
 
     def send_text(self, text_to_send, user_id):
         self.api.messages.send(
@@ -101,7 +107,18 @@ class Bot:
         )
 
     def send_image(self, image, user_id):
-        pass    # TODO
+        upload_url = self.api.photos.getMessagesUploadServer()['upload_url']
+        upload_data = requests.post(url=upload_url, files={'photo': ('image.png', image, 'image/png')}).json()
+        image_data = self.api.photos.saveMessagesPhoto(**upload_data)
+        owner_id = image_data[0]['owner_id']
+        media_id = image_data[0]['id']
+        attachment = f'photo{owner_id}_{media_id}'
+
+        self.api.messages.send(
+            attachment=attachment,
+            random_id=random.randint(0, 2 ** 20),
+            peer_id=user_id
+        )
 
     def send_step(self, step, user_id, text, context):
         if 'text' in step:
